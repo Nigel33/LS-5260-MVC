@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Backbone Collection Example</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="stylesheets/page.css" />
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/underscore-min.js"></script>
+    <script src="javascripts/handlebars.js"></script>
+    <script src="javascripts/backbone-min.js"></script>
+  </head>
+  <body>
+     <form action="" method="post">
+      <fieldset>
+        <label>Title</label>
+        <input type="text" name="title" />
+        <label>Body</label>
+        <input type="text" name="body" />
+        <textarea rows="8" cols="80" name+"body"></textarea>
+        <input type="submit" value="Create Post" />
+      </fieldset>
+    </form>
+    <main></main>
+
+
+  <script id="posts_template" type="text/x-handlebars">
+    {{#each posts}}
+      <article id="post_{{id}}">
+        {{> post}}
+      </article>
+    {{/each}}
+  </script>
+
+  <script id="post" type="text/x-handlebars">
+    <h1>{{title}}</h1>
+    <p>{{body}}</p>
+  </script>
+
+  <script src="javascripts/app.js"></script>
+  </body>
+</html>

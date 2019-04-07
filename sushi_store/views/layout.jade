@@ -1,0 +1,30 @@
+include /_mixins
+
+doctype html
+html
+	head
+		title Sushi Store
+		link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous")
+		+stylesheet_link_tag('main')
+		+include_javascript_tag('vendor/all')
+		+include_javascript_tag('handlebars/templates', 'handlebars/helpers')
+	body
+		header
+		main
+			#cart
+			#content
+				block content
+		footer
+
+			+include_javascript_tag('application')
+			+include_javascript_tag('models/sushi')
+			+include_javascript_tag('collections/sushis', 'collections/sushiCart')
+			+include_javascript_tag('views/sushiView', 'views/sushiItemView', 'views/cartView', 'views/indexView', 'views/checkoutView')
+			block scripts
+			script(type="text/javascript").
+				let data = !{JSON.stringify(sushis)};
+
+				App.sushis = new Sushis(data);
+				App.init();
+			+include_javascript_tag('router')
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="stylesheets/style.css" rel="stylesheet" />
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/underscore-min.js"></script>
+    <script src="javascripts/handlebars.js"></script>
+    <script src="javascripts/backbone-min.js"></script>
+
+    <title>test</title>
+
+  </head>
+  <body>
+    <script id="post" type="text/template">
+      <article>
+        <header>
+          <h1>{{title}}</h1>
+          <p>By {{userName}}</p>
+        </header>
+        <p>{{body}}</p>
+      </article>
+    </script>
+    <script>
+       let postTemplate = Handlebars.compile($('#post').html());
+
+      let PostModel = Backbone.Model.extend({
+        urlRoot: "http://jsonplaceholder.typicode.com/posts",
+        setUser: function() {
+          let user = new UserModel({id: this.get('userId')})
+          user.fetch({
+            success: setUserOnPost.bind(this)
+          })
+        },
+
+        initialize: function() {
+          let newModel = this.has('userId');
+
+          if (newModel) {
+            this.setUser();
+          }
+
+          this.on('change:userId', this.setUser);
+          this.on('change', function(model) {
+            if (model.has('user')) {
+              renderPost(model);
+            }
+          })
+        },
+      });
+
+      function setUserOnPost(model) {
+        this.set('user', model);
+
+        renderPost(this);
+      }
+
+      let UserModel = Backbone.Model.extend({
+        urlRoot: "http://jsonplaceholder.typicode.com/users",
+      });
+
+      let post = new PostModel({id: 1});
+      post.fetch();
+
+      let post_2 = new PostModel({
+        id: 2,
+        title: 'GIna is happy',
+        body: 'Gina went to a party',
+        userId: 2,
+      })
+
+      function renderPost(model) {
+        let content = processData(model);
+        $('body').append(postTemplate(content));
+      }
+
+      function processData(model) {
+        let result = {};
+
+        result.title = model.get('title');
+        result.body = model.get('body');
+        result.userName = model.get('user').get('username');
+
+        return result;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // var Book = Backbone.Model.extend({urlRoot : '/books'});
+
+      // var solaris = new Book({id: "1083-lem-solaris"});
+
+      // alert(solaris.url());
+
+
+    </script>
+
+
+  </body>
+</html>

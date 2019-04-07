@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="stylesheets/style.css" rel="stylesheet" />
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/handlebars.js"></script>
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/underscore-min.js"></script>
+    <script src="javascripts/backbone-min.js"></script>
+
+    <title>test</title>
+
+  </head>
+  <body>
+
+  </body>
+  <script>
+    console.log(repeatedChar('aaba')) === 'a'
+    console.log(repeatedChar('abba')) === 'b'
+    console.log(repeatedChar('abcd')) === null
+    console.log(repeatedChar('')) === null
+    // console.log(repeatedChar('a  bc  a')) === 'a'
+    // console.log(repeatedChar('a  b b  a')) === 'b'
+    console.log(repeatedChar('  aba')) === 'a'
+
+    // function repeatedChar(text) {
+    //   let hash = {};
+    //   let array = text.replace(/  /g, '').split('');
+    //   let char;
+    //   let result;
+
+    //   // console.log(array);
+    //   for (i = 0; i < array.length; i++) {
+    //     char = array[i];
+    //     if (!(hash[char])) {
+    //       hash[char] = 1;
+    //     } else {
+    //       result = char;
+    //       return result;
+    //     }
+    //   }
+
+    //   return null;
+    // }
+
+    function repeatedChar(text) {
+      let hash = {};
+      let array = text.replace(/  /g, '').split('');
+      let char;
+      let result;
+      let key;
+
+      // console.log(array);
+      for (i = 0; i < array.length; i++) {
+        char = array[i];
+        if (hash[char]) {
+          hash[char] += 1;
+        } else {
+          hash[char] = 1;
+        }
+      }
+
+      for (key in hash) {
+        if (hash[key] === 1) {
+          return key;
+        }
+      }
+
+      return null;
+    }
+
+
+
+
+
+
+
+
+  </script>
+</html>

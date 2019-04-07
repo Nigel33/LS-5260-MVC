@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link href="stylesheets/style.css" rel="stylesheet" /> -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/handlebars.js"></script>
+    <!-- <script src="javascripts/app.js"></script> -->
+    <script src="javascripts/underscore-min.js"></script>
+    <script src="javascripts/backbone-min.js"></script>
+
+    <title>test</title>
+
+  </head>
+  <body>
+    <script id="users" type="text/template">
+      fdff
+      {{#each users}}
+      <article id="user_{{id}}">
+        <h1><a href="http://{{website}}">{{name}}</a></h1>
+        <h2><a href="mailto:{{email}}">{{email}}</a></h2>
+        <dl>
+          <dt>User name</dt>
+          <dd>{{username}}</dd>
+          <dt>Company</dt>
+          <dd>{{company.name}}</dd>
+        </dl>
+      </article>
+      {{/each}}
+    </script>
+    <script>
+      var User = Backbone.Model.extend({
+        url: "http://jsonplaceholder.typicode.com/users"
+      });
+
+      let template = Handlebars.compile($("#users").html());
+
+      var Collection = Backbone.Collection.extend({
+        deferred: null,
+        model: User,
+        url: "http://jsonplaceholder.typicode.com/users",
+        initialize: function() {
+          this.on("sync sort", this.renderCollection);
+        },
+
+        renderCollection: function() {
+          $('body').html(template({users: this.toJSON()}))
+        },
+
+        parse: function(response) {
+          response.forEach(function(user) {
+            let company = user.company;
+
+            user.company_name = company.name;
+            user.catchPhrase = company.catchPhrase;
+            user.company_bs = company.bs;
+            delete user.company;
+          })
+
+          return response;
+        },
+      });
+
+      var UserCollection = new Collection()
+
+      UserCollection.fetch().done(function(result) {
+        console.log(UserCollection.toJSON());
+      });
+
+
+
+
+
+
+
+
+
+      // UserCollection.modifyUser();
+      // let fetching = UserCollection.fetch({
+      //   success: function(collection) {
+      //     console.log(collection.toJSON());
+      //   },
+      // })
+
+      // $.when(fetching).done(function(collection) {
+      //   UserCollection.create({
+      //     name: 'Nigel',
+      //     email: 'nigelhing1@gmail.com',
+      //   });
+
+      //   console.log(UserCollection.toJSON());
+      // })
+
+
+      // $.when(fetching).done(function(object, f, a, b) {
+      //   console.log(object);
+      //   console.log(b);
+      // })
+
+      // console.log(nigel);
+
+
+    </script>
+  </body>
+</html>
